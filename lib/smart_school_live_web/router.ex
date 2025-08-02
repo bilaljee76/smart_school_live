@@ -19,21 +19,8 @@ defmodule SmartSchoolLiveWeb.Router do
 
   scope "/", SmartSchoolLiveWeb do
     pipe_through :browser
-    live "/users", UserLive.Index, :index
-    live "/users/new", UserLive.Index, :new
-    live "/users/:id/edit", UserLive.Index, :edit
-
-    live "/users/:id", UserLive.Index, :show
-    live "/users/:id/show/edit", UserLive.Show, :edit
 
     get "/", PageController, :home
-
-    live "/roles", RoleLive.Index, :index
-    live "/roles/new", RoleLive.Index, :new
-    live "/roles/:id/edit", RoleLive.Index, :edit
-
-    live "/roles/:id", RoleLive.Show, :show
-    live "/roles/:id/show/edit", RoleLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
@@ -81,6 +68,20 @@ defmodule SmartSchoolLiveWeb.Router do
       on_mount: [{SmartSchoolLiveWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+
+      live "/users", UserLive.Index, :index
+      live "/users/new", UserLive.Index, :new
+      live "/users/:id/edit", UserLive.Index, :edit
+
+      live "/users/:id", UserLive.Index, :show
+      live "/users/:id/show/edit", UserLive.Show, :edit
+
+      live "/roles", RoleLive.Index, :index
+      live "/roles/new", RoleLive.Index, :new
+      live "/roles/:id/edit", RoleLive.Index, :edit
+
+      live "/roles/:id", RoleLive.Show, :show
+      live "/roles/:id/show/edit", RoleLive.Show, :edit
     end
   end
 
