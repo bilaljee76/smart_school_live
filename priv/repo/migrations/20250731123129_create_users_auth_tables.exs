@@ -9,8 +9,8 @@ defmodule SmartSchoolLive.Repo.Migrations.CreateUsersAuthTables do
       add :email, :citext, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :utc_datetime
+      add :user_id, :string
       add :age, :integer
-      add :cnic, :string
 
       timestamps(type: :utc_datetime)
     end
@@ -28,6 +28,5 @@ defmodule SmartSchoolLive.Repo.Migrations.CreateUsersAuthTables do
 
     create index(:users_tokens, [:user_id])
     create unique_index(:users_tokens, [:context, :token])
-    create unique_index(:users, [:cnic, :email], name: :users_cnic_email_index)
   end
 end

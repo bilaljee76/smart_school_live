@@ -9,8 +9,8 @@ defmodule SmartSchoolLive.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
+    field :user_id, :string
     field :age, :integer
-    field :cnic, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -40,11 +40,10 @@ defmodule SmartSchoolLive.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:name, :email, :password, :age, :cnic])
+    |> cast(attrs, [:name, :email, :password, :user_id, :age])
+    |> validate_required([:name, :user_id, :age])
     |> validate_email(opts)
     |> validate_password(opts)
-    |> validate_required([:name, :age, :cnic])
-    |> unique_constraint([:cnic, :email], name: :users_cnic_email_index)
   end
 
   defp validate_email(changeset, opts) do
@@ -163,4 +162,14 @@ defmodule SmartSchoolLive.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
+  def register_user_by_admin(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:name, :email, :password, :user_id, :age])
+    |> validate_required([:name, :user_id, :age])
+    # |> validate_email(opts)
+    # |> validate_password(opts)
+    |> maybe_hash_password(opts)
+  end
+
 end

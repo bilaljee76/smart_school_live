@@ -15,14 +15,14 @@
   <:col :let={{_id, user}} label="Name">{user.name}</:col>
   <:col :let={{_id, user}} label="Email">{user.email}</:col>
   <:col :let={{_id, user}} label="Password">
-    {String.duplicate("●", String.length(String.slice(user.hashed_password || "", 0, 8)))}
+    {if user.hashed_password, do: "●●●●●●●●", else: ""}
   </:col>
+  <:col :let={{_id, user}} label="User ID">{user.user_id}</:col>
   <:col :let={{_id, user}} label="Age">{user.age}</:col>
-  <:col :let={{_id, user}} label="Cnic">{user.cnic}</:col>
 
   <:action :let={{_id, user}}>
     <div class="sr-only">
-      <.link navigate={~p"/users/#{user}"}>Show</.link>
+      <.link navigate={~p"/users/#{user.id}"}>Show</.link>
     </div>
     <.link patch={~p"/users/#{user}/edit"}>Edit</.link>
   </:action>
@@ -44,5 +44,12 @@
     action={@live_action}
     user={@user}
     patch={~p"/users"}
+    admin_form={true}
   />
 </.modal>
+
+<%= if @live_action == :show and @user do %>
+  <.modal id="user-model" show on_cancel={JS.navigate(~p"/users")}>
+    <.live_component module={SmartSchoolLiveWeb.UserLive.Show} id={@user.id} user={@user} />
+  </.modal>
+<% end %>

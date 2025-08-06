@@ -32,6 +32,12 @@ defmodule SmartSchoolLiveWeb.UserLive.Index do
     |> assign(:user, nil)
   end
 
+  defp apply_action(socket, :show, %{"id" => _id}) do
+    socket
+    |> assign(:page_title, "Show Users")
+    |> assign(:user, nil)
+  end
+
   @impl true
   def handle_info({SmartSchoolLiveWeb.UserLive.FormComponent, {:saved, user}}, socket) do
     {:noreply, stream_insert(socket, :users, user)}
