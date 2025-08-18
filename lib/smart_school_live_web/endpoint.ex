@@ -19,6 +19,7 @@ defmodule SmartSchoolLiveWeb.Endpoint do
   #
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
+
   plug Plug.Static,
     at: "/",
     from: :smart_school_live,

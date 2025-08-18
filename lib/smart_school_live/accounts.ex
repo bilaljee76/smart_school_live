@@ -370,7 +370,8 @@ defmodule SmartSchoolLive.Accounts do
   end
 
   def add_new_user(attrs) do
-    User.register_user_by_admin(%User{}, attrs, hash_password: true)
+    %User{}
+    |> User.register_user_by_admin(attrs)
     |> Repo.insert()
   end
 end

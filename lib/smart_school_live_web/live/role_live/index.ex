@@ -6,7 +6,7 @@ defmodule SmartSchoolLiveWeb.RoleLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :roles, Roles.list_roles())}
+    {:ok, assign(socket, :roles, Roles.list_roles())}
   end
 
   @impl true

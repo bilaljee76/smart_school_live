@@ -6,7 +6,7 @@ defmodule SmartSchoolLiveWeb.UserLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :users, Accounts.list_users())}
+    {:ok, assign(socket, :users, Accounts.list_users())}
   end
 
   @impl true
@@ -40,7 +40,7 @@ defmodule SmartSchoolLiveWeb.UserLive.Index do
 
   @impl true
   def handle_info({SmartSchoolLiveWeb.UserLive.FormComponent, {:saved, user}}, socket) do
-    {:noreply, stream_insert(socket, :users, user)}
+    {:noreply, assign(socket, :users, user)}
   end
 
   @impl true
@@ -48,6 +48,6 @@ defmodule SmartSchoolLiveWeb.UserLive.Index do
     user = Accounts.get_user!(id)
     {:ok, _} = Accounts.delete_user(user)
 
-    {:noreply, stream_delete(socket, :users, user)}
+    {:noreply, assign(socket, :users, user)}
   end
 end

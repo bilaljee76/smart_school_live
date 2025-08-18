@@ -9,26 +9,30 @@
 
 <.table
   id="users"
-  rows={@streams.users}
-  row_click={fn {_id, user} -> JS.navigate(~p"/users/#{user.id}") end}
+  rows={@users}
+  row_id={fn user -> "user-#{user.id}" end}
+  row_click={fn user -> JS.navigate(~p"/users/#{user.id}") end}
 >
-  <:col :let={{_id, user}} label="Name">{user.name}</:col>
-  <:col :let={{_id, user}} label="Email">{user.email}</:col>
-  <:col :let={{_id, user}} label="Password">
+  <:col :let={user} label="Photo">
+    <img src={user.avatar} width="50" height="50" />
+  </:col>
+  <:col :let={user} label="Name">{user.name}</:col>
+  <:col :let={user} label="Email">{user.email}</:col>
+  <:col :let={user} label="Password">
     {if user.hashed_password, do: "●●●●●●●●", else: ""}
   </:col>
-  <:col :let={{_id, user}} label="User ID">{user.user_id}</:col>
-  <:col :let={{_id, user}} label="Age">{user.age}</:col>
+  <:col :let={user} label="User ID">{user.user_id}</:col>
+  <:col :let={user} label="Age">{user.age}</:col>
 
-  <:action :let={{_id, user}}>
+  <:action :let={user}>
     <div class="sr-only">
       <.link navigate={~p"/users/#{user.id}"}>Show</.link>
     </div>
     <.link patch={~p"/users/#{user}/edit"}>Edit</.link>
   </:action>
-  <:action :let={{id, user}}>
+  <:action :let={user}>
     <.link
-      phx-click={JS.push("delete", value: %{id: user.id}) |> hide("##{id}")}
+      phx-click={JS.push("delete", value: %{id: user.id}) |> hide("#user-#{user.id}")}
       data-confirm="Are you sure?"
     >
       Delete
@@ -39,12 +43,12 @@
 <.modal :if={@live_action in [:new, :edit]} id="user-modal" show on_cancel={JS.patch(~p"/users")}>
   <.live_component
     module={SmartSchoolLiveWeb.UserLive.FormComponent}
-    id={@user.id || :new}
-    title={@page_title}
-    action={@live_action}
+    id={:new}
+    title="New User"
     user={@user}
+    action={:new}
     patch={~p"/users"}
-    admin_form={true}
+    current_user={@current_user}
   />
 </.modal>
 

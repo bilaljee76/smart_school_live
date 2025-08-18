@@ -3,6 +3,7 @@ defmodule SmartSchoolLive.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
+    field :avatar, :string
     field :name, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
@@ -163,13 +164,21 @@ defmodule SmartSchoolLive.Accounts.User do
     end
   end
 
+  # def register_user_by_admin(user, attrs, opts \\ []) do
+  #   IO.puts("📌 In register_user_by_admin/3")
+  #   user
+  #   |> cast(attrs, [:name, :email, :password, :user_id, :age])
+  #   |> validate_required([:name, :user_id, :age])
+  #   # |> validate_email(opts)
+  #   # |> validate_password(opts)
+  #   |> maybe_hash_password(opts)
+  # end
+
   def register_user_by_admin(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:name, :email, :password, :user_id, :age])
-    |> validate_required([:name, :user_id, :age])
-    # |> validate_email(opts)
-    # |> validate_password(opts)
-    |> maybe_hash_password(opts)
+    |> cast(attrs, [:avatar, :name, :email, :password, :user_id, :age])
+    |> validate_required([:avatar, :name, :password, :email])
+    |> validate_email(opts)
+    |> validate_password(opts)
   end
-
 end
